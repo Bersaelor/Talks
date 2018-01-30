@@ -43,7 +43,7 @@ build-lists: true
 ![inline autoplay loop](low battery.gif)
 
 * battery power
-* every cpu cycle on mobile costs power (and $$$ when on server)
+* every CPU cycle on mobile costs power (and $$$ when on server)
 * sometimes 0fps -> good thing
 
 ---
@@ -62,7 +62,7 @@ build-lists: true
 
 ## What to Optimize?
 
-* cpu cycles ![inline 100%](time profiler.png)
+* CPU cycles ![inline 100%](time profiler.png)
 * memory ![inline 100%](allocations.png)
 
 * sometimes those go together, sometimes against each other
@@ -73,7 +73,7 @@ build-lists: true
 
 ![inline](optimizationLoop.png)
 
-* Unit tests features so we don't break them during the loop
+* unit tests features so we don't break them during the loop
 
 
 ---
@@ -90,8 +90,8 @@ Donald Knuth
 
 We want to write:
 
-1. Understandable, safe and testable code (DRY, KISS etc)
-2. Optimize as _needed_
+1. understandable, safe and testable code (DRY, KISS, etc.)
+2. optimize as _needed_
 
 * programming time is 💰
 * faster code often more complex (💰)
@@ -149,7 +149,7 @@ struct Star3D {
 
 * only x/y/z needed for spatial tree structure
 * significantly reduces size of tree and increases tree lookup performance
-* Box is `Unmanaged` / `Unretained` to speed up Tree-Algorithm 🚨
+* `Box` is `Unmanaged` / `Unretained` to speed up tree structure 🚨
 
 ![right 130%](kdtree.png)
 
@@ -160,7 +160,7 @@ struct Star3D {
 
 * Overall stride of 208 Byte
   
-* actually though this was _sort of_ optimized, as
+* actually, this was _sort of_ optimized, as
 
 * `print(Int8.max) // 127`
 * `print(Int16.max) // 32767`
@@ -193,7 +193,7 @@ with these sizes, let's look at more detail
 
 --- 
 
-## Our favorite Swift Type 
+## Our Favorite Swift Type 
 
 ```
 enum Optional<Wrapped> {
@@ -241,7 +241,7 @@ in my case I actually store it as a static variable and compare the variable
 
 # Alignment (C Knowledge to the Rescue!)
 
-* modern CPU's lay out data types so memory access is fast
+* modern CPUs lay out data types so memory access is fast
 
 * each type has a _memory aligment_
   1. `char` can start anywhere
@@ -266,7 +266,7 @@ in my case I actually store it as a static variable and compare the variable
 
 --- 
 
-# Bad Alignement Example
+# Bad Alignment Example
 
 ```
 struct BadAligned {
@@ -303,7 +303,7 @@ Like playing tetris ;)
 
 # Aligned StarData
 
-* Optionals + Alignement: 
+* Optionals + Alignment: 
 
 * 208 -> 152
 
@@ -314,27 +314,27 @@ Like playing tetris ;)
 
 ## Use Domain Knowledge
 
-* biggest chunk of data are the Strings!
+* biggest chunk of data is the strings!
 
 * turns out many strings are empty
 
 * only 146 stars have proper names
 
-* 3801 unique Gliese Id's
+* 3801 unique Gliese IDs
 
 * 3064 Bayer Flamstedt Designations
 
-* 4307 different Spectral Types (could be cleaned up)
+* 4307 different spectral types (could be cleaned up)
 
 ---
 
 ![left 82%](starDataIndexed.png)
 
-## Spare Strings into separate Dictionaries
+## Spare Strings into Separate Dictionaries
 
 * during loading of database, index unique instances of strings
 
-* create nice accessor's to hide implementation detail
+* create nice accessors to hide implementation detail
 
 ```
 func getGlId() -> String? {
@@ -346,7 +346,7 @@ func getGlId() -> String? {
 
 ---
 
-## Alignement one more time
+## Alignment One More Time
 
 ![inline](finalStruct.png)
 
@@ -361,32 +361,32 @@ again, this is not about the numbers
 but about getting more out of our app -> more stars
 
 ---
-## premature optimization is the root of all evil[…]
+## Premature optimization is the root of all evil…
 
-Examples (When to not use what we just learned):
+Examples (when not to use what we just learned):
 
 * set of 20 users ⚠️
 * media library of 1000 movies ⚠️
 * Server-Side Swift with > 10^6 entries ✅
-* idk procedurally generated content in a game ✅
+* procedurally generated content in a game ✅
 * points of interest in MapKit ✅
 
 ---
 ## Server-Side Swift Example
 
-* getting lot's of data into a small machine works especially well on Servers
+* getting lots of data into a small machine works especially well on servers
 
 * example: https://github.com/Bersaelor/StarsOnKitura / https://starsonkitura.eu-de.mybluemix.net
 
 
 ---
-## What did we learn today
+## What did we learn today?
 
 * pick your battles wisely!
 
-* play Tetris with Struct `var`s when necessary
+* play Tetris with struct `var`s when necessary
 
-* know your domain to utilize it's properties
+* know your domain to utilize its properties
 
 
 ---
