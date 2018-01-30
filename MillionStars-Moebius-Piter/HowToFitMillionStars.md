@@ -52,11 +52,11 @@ build-lists: true
 
 * enable advanced features
 
-![inline](advancesfeatures.jpg)
-
 ^• impossible without optimization
 • maybe show Pyramid of user happiness
 • maybe talk about 0fps board game example
+
+![right 33%](advancesfeatures.jpg)
 
 ---
 
