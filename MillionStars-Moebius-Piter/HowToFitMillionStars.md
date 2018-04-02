@@ -60,16 +60,81 @@ build-lists: true
 
 ---
 
-## What to Optimize?
+## What to Optimize for?
 
-* CPU cycles ![inline 100%](time profiler.png)
-* memory ![inline 100%](allocations.png)
+* CPU cycles 
+* loading times, battery power, fps
 
-* sometimes those go together, sometimes against each other
+![inline](cpuprofiler.png)
 
 ---
 
-## How?
+## What to Optimize for?
+
+* memory
+* how long our stays in background mode before being killed by iOS
+* fitting your project on small mobile devices (Watch!)
+
+![inline](allocations.png)
+
+---
+
+## What to Optimize for?
+
+* memory and cpu optimization can sometimes benefit from each other, example:
+
+```swift
+struct Element {
+  let n: Int
+  // more variables to fill to certain size
+}
+
+let array: [Element] = // ...
+
+measure {
+  _ = array.reduce(0) { $0 + $1.n }
+}
+```
+
+---
+
+## What to Optimize for?
+
+* memory and cpu optimization can sometimes benefit from each other 
+
+![inline 100%](memoryPerformance.png)
+
+^^Remember: all test-cases have the same number of operations!
+
+---
+
+## Explanation L1/L2-Caches
+
+
+
+---
+
+## What to Optimize for?
+
+* sometimes cpu ⚡️ memory
+
+* e.g. all kinds of caches, simplest example:
+
+```swift
+lazy var lazilyCalculated: Object = {
+  return makeHeavyObject()
+}
+
+// vs
+
+var lazilyCalculated: Object {
+  return makeHeavyObject()
+}
+```
+
+---
+
+## Optimization Steps
 
 ![inline](optimizationLoop.png)
 
@@ -120,7 +185,7 @@ xcodebuild -project App.xcproj -scheme App clean build
 
 * large database of stars
 * many columns
-* `MemoryLayout<Star3D>.size`
+* ` =<Star3D>.size`
 * `// 217`
 * `MemoryLayout<Star3D>.stride`
 * `// 224`
@@ -395,6 +460,7 @@ Examples (when not to use what we just learned):
 * Premature Optimization http://wiki.c2.com/?PrematureOptimization
 * The Lost Art of C Structure Packing http://www.catb.org/esr/structure-packing/
 * Writing High-Performance Swift Code https://github.com/apple/swift/blob/master/docs/OptimizationTips.rst
+* Swift Array Design https://github.com/apple/swift/blob/master/docs/Arrays.rst
 * KDTree / Stars at Functional Swift https://www.youtube.com/watch?v=CwcEjxRtn18
 
 
