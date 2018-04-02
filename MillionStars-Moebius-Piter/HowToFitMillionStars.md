@@ -138,9 +138,7 @@ measure {
 
 ---
 
-## What to Optimize for?
-
-* sometimes cpu ⚡️ memory
+# sometimes cpu ⚡️ memory 
 
 * e.g. all kinds of caches, simplest example:
 
@@ -525,6 +523,8 @@ MemoryLayout<BadAligned>.stride // 32Byte
 
 # Better Alternative (saves 25%)
 
+* generally, arrange from small -> large types
+
 ```swift
 struct WellAligned {
     let isHidden: Bool
@@ -613,6 +613,12 @@ func getGlId() -> String? {
     return gl_id != -1 ? DB.glIds[Int(gl_id)] : nil
 }
 ```
+
+* But: dictionary-lookups means more work for cpu!
+
+* This is one of those `Memory ⚡️ CPU` examples we have to carefully profile
+
+
 
 
 ---
@@ -729,10 +735,13 @@ xcodebuild -project App.xcproj -scheme App clean build
 
 * pick your battles wisely!
 
-* play Tetris with struct `var`s when necessary
+* pack your struct's tightly ("play Tetris")
 
 * know your domain to utilize its properties
 
+* carefully balance CPU vs RAM
+
+* profile first!
 
 ---
 ## Links
