@@ -60,6 +60,28 @@ build-lists: true
 
 ---
 
+# ⚡️Premature Optimization⚡️
+
+> We should forget about small efficiencies, say about 97% of the time: _premature optimization is the root of all evil_. Yet we should not pass up our opportunities in that critical 3%."
+
+Donald Knuth
+
+--- 
+
+# ⚡️Premature Optimization⚡️
+
+We want to write:
+
+1. understandable, safe and testable code (DRY, KISS, etc.)
+2. optimize as _needed_
+
+* programming time is 💰
+* faster code often more complex (💰)
+* -> pick your battles
+
+
+---
+
 ## What to Optimize for?
 
 * CPU cycles 
@@ -155,27 +177,6 @@ func heavyCalculation(input: Input) -> Output {
 * unit test `Input -> Output` for correctness
 * optimize internal algorithm iteratively for performance 
 
----
-
-# ⚡️Premature Optimization⚡️
-
-> We should forget about small efficiencies, say about 97% of the time: _premature optimization is the root of all evil_. Yet we should not pass up our opportunities in that critical 3%."
-
-Donald Knuth
-
---- 
-
-# ⚡️Premature Optimization⚡️
-
-We want to write:
-
-1. understandable, safe and testable code (DRY, KISS, etc.)
-2. optimize as _needed_
-
-* programming time is 💰
-* faster code often more complex (💰)
-* -> pick your battles
-
 
 ---
 
@@ -201,36 +202,160 @@ We want to write:
 * `MemoryLayout<Star3D>.size // 217`
 * `MemoryLayout<Star3D>.stride // 224`
 
+![inline](strideVsSize.png)
+
+* $$ n * Stride(type) = Size(Array) $$
 
 ---
 
 ![](starsBack.png)
 
-![left 110%](basicStruct.png)
 ## Basic (Unoptimized?) Struct
 
-* Overall stride of 208 Byte
-  
-* some thoughts on optimization went in there
+```swift
+struct StarData {
+    let right_ascension: Float
+    let declination: Float
+    let hip_id: Int32?
+    let hd_id: Int32?
+    let hr_id: Int32?
+    let gl_id: String?
+    let bayer_flamstedt: String?
+    let properName: String?
+    let distance: Double
+    let rv: Double?
+    let mag: Double
+    let absmag: Double
+    let spectralType: String?
+    let colorIndex: Float?
+}
+
+MemoryLayout<StarData>.stride // 208
+```
+
+---
+
+![](starsBack.png)
+
+## How big are Ints?
 
 * `print(Int8.max) // 127`
 * `print(Int16.max) // 32767`
 * `print(Int32.max) // 2147483647`
 * `print(Int.max) // 9223372036854775807`
 
+* when designing the struct we already noticed we never need more then `Int32` to fit all stars
+
 ^as we all remember Int sizes use different amount of bytes
-looks optimal, used the right integer sizes
-with these sizes, let's look at more detail
 
 ---
 
 ![](starsBack.png)
 
-![left 140%](tally.png)
+## Basic (Unoptimized?) Struct
+  
+```swift, [.highlight: 4-6]
+struct StarData {
+    let right_ascension: Float
+    let declination: Float
+    let hip_id: Int32?         // 4
+    let hd_id: Int32?          // 4
+    let hr_id: Int32?          // 4
+    let gl_id: String?
+    let bayer_flamstedt: String?
+    let properName: String?
+    let distance: Double
+    let rv: Double?
+    let mag: Double
+    let absmag: Double
+    let spectralType: String?
+    let colorIndex: Float?
+}
+```
 
-## Quick Check
+^looks optimal, used the right integer sizes
+^with these sizes, let's look at more detail
 
-* `print(MemoryLayout<X>.size)`
+---
+
+![](starsBack.png)
+
+## Float
+
+```swift, [.highlight: 2-3, 15]
+struct StarData {
+    let right_ascension: Float   // 4
+    let declination: Float       // 4
+    let hip_id: Int32?           // 4
+    let hd_id: Int32?            // 4
+    let hr_id: Int32?            // 4
+    let gl_id: String?
+    let bayer_flamstedt: String?
+    let properName: String?
+    let distance: Double
+    let rv: Double?
+    let mag: Double
+    let absmag: Double
+    let spectralType: String?
+    let colorIndex: Float?       // 4
+}
+```
+
+---
+
+![](starsBack.png)
+
+## Double
+
+```swift, [.highlight:  10-13]
+struct StarData {
+    let right_ascension: Float   // 4
+    let declination: Float       // 4
+    let hip_id: Int32?           // 4
+    let hd_id: Int32?            // 4
+    let hr_id: Int32?            // 4
+    let gl_id: String?
+    let bayer_flamstedt: String?
+    let properName: String?
+    let distance: Double         // 8
+    let rv: Double?              // 8
+    let mag: Double              // 8
+    let absmag: Double           // 8
+    let spectralType: String?
+    let colorIndex: Float?       // 4
+}
+```
+
+---
+
+![](starsBack.png)
+
+## String
+
+```swift, [.highlight:  7-9, 14]
+struct StarData {
+    let right_ascension: Float   // 4
+    let declination: Float       // 4
+    let hip_id: Int32?           // 4
+    let hd_id: Int32?            // 4
+    let hr_id: Int32?            // 4
+    let gl_id: String?           // 24
+    let bayer_flamstedt: String? // 24
+    let properName: String?      // 24
+    let distance: Double         // 8
+    let rv: Double?              // 8
+    let mag: Double              // 8
+    let absmag: Double           // 8
+    let spectralType: String?    // 24
+    let colorIndex: Float?       // 4
+}
+```
+
+---
+
+![](starsBack.png)
+
+## Quick Summing up
   
 * Float, Int32 : 4 Byte
 
@@ -250,7 +375,7 @@ with these sizes, let's look at more detail
 
 ## Our Favorite Swift Type 
 
-```
+```swift
 enum Optional<Wrapped> {
     case none
     case some(Wrapped)
@@ -258,19 +383,25 @@ enum Optional<Wrapped> {
 ```
 
 * Adds 1 Byte
-![inline 100%](memorysize of optional.png)
+
+```swift
+MemoryLayout<Int>.size     // 8
+MemoryLayout<Int?>.size    // 9
+MemoryLayout<String>.size  // 24
+MemoryLayout<String?>.size // 25
+```
 
 ---
 
 ![](starsBack.png)
 
-## No Optionals
+## Removing Optionals
 
 * let's use default value instead of nil (`-1`,`""`)
 
-* still be safe by using `private` members and public getters
+* stay safe by using `private` members and public getters
 
-```
+```swift
 public func getHipId() -> Int? {
     return hip_id != -1 ? hip_id : nil
 }
@@ -284,13 +415,39 @@ in my case I actually store it as a static variable and compare the variable
 
 ![](starsBack.png)
 
-![left 90%](withoutOptionals.png)
+## Struct without Optionals
+
+```swift
+struct StarData {
+    let right_ascension: Float
+    let declination: Float
+    let hip_id: Int32
+    let hd_id: Int32
+    let hr_id: Int32
+    let gl_id: String
+    let bayer_flamstedt: String
+    let properName: String
+    let distance: Double
+    let rv: Double
+    let mag: Double
+    let absmag: Double
+    let spectralType: String
+    let colorIndex: Float?
+}
+
+MemoryLayout<StarData>.stride // 160
+```
+
+
+---
+
+![](starsBack.png)
 
 ## Struct without Optionals
 
 * wait, what?
 
-* `208 - 160 != 9 * 1`
+* $$ 208 - 160 \neq 9 * 1 $$
 
 * we removed 9 Optionals and gained 48 Byte 🤔
 
@@ -317,7 +474,15 @@ in my case I actually store it as a static variable and compare the variable
 
 # Alignment (Swift)
 
-![inline](alignementSwift.png)
+```swift
+MemoryLayout<Int8>.alignment             // 1
+MemoryLayout<Int16>.alignment            // 2
+MemoryLayout<Float>.alignment            // 4
+MemoryLayout<Double>.alignment           // 8
+MemoryLayout<Optional<Double>>.alignment // 8
+MemoryLayout<String>.alignment           // 8
+MemoryLayout<Optional<String>>.alignment // 8
+```
 
 --- 
 
@@ -325,9 +490,17 @@ in my case I actually store it as a static variable and compare the variable
 
 # Padding
 
-![inline](padding.png)
+```swift
+struct User {
+  let firstName: String   // 24Byte starts at 0
+  let middleName: String? // 25Byte starts at 24
+                          // padding of 7 Byte
+  let lastname: String    // 24Byte starts at 56
+}
+MemoryLayout<User>.stride // 80
+```
 
-![inline 120%](paddingGraphic.png)
+![inline 120% left](paddingGraphic.png)
 
 --- 
 
@@ -335,14 +508,14 @@ in my case I actually store it as a static variable and compare the variable
 
 # Bad Alignment Example
 
-```
+```swift
 struct BadAligned {
     let isHidden: Bool
     let size: Double
     let isInteractable: Bool
     let age: Int
 }
-print(MemoryLayout<BadAligned>.stride) // 32Byte
+MemoryLayout<BadAligned>.stride // 32Byte
 ```
 ![left inline 100%](badPadding.png)
 
@@ -350,16 +523,18 @@ print(MemoryLayout<BadAligned>.stride) // 32Byte
 
 ![](starsBack.png)
 
-# Better Alternative
-```
+# Better Alternative (saves 25%)
+
+```swift
 struct WellAligned {
     let isHidden: Bool
     let isInteractable: Bool
     let height: Double
     let age: Int
 }
-print(MemoryLayout<WellAligned>.stride) // 24Byte
+print(MemoryLayout<WellAligned>.stride) // 24
 ```
+
 ![left inline 100%](goodPadding.png)
 
 ^it's nice isn't it?
@@ -370,24 +545,48 @@ Like playing tetris ;)
 
 ![](starsBack.png)
 
-![left 82%](alignedStarData.png)
-
 # Aligned StarData
 
-* Optionals + Alignment: 
+* 208 -> 152 (Optionals + Alignment)
 
-* 208 -> 152
+```swift
+struct StarData {
+    let right_ascension: Float
+    let declination: Float
+    let hip_id: Int32
+    let hd_id: Int32
+    let hr_id: Int32
+    let colorIndex: Float
+    let distance: Double
+    let rv: Double
+    let mag: Double
+    let absmag: Double
+    let gl_id: String
+    let bayer_flamstedt: String
+    let properName: String
+    let spectralType: String
+}
 
+MemoryLayout<StarData>.stride   // 152
+```
 
 ---
 
 ![](starsBack.png)
 
-![left 82%](alignedStarDataAnnotated.png)
-
 ## Use Domain Knowledge
 
-* biggest chunk of data is the strings!
+```swift
+struct StarData {
+    // ...                         56 Bytes of Float/Int
+    let gl_id: String           // 24
+    let bayer_flamstedt: String // 24
+    let properName: String      // 24
+    let spectralType: String    // 24
+}
+```
+
+* largest piece are the strings
 
 * turns out many strings are empty
 
@@ -403,18 +602,44 @@ Like playing tetris ;)
 
 ![](starsBack.png)
 
-![left 82%](starDataIndexed.png)
-
 ## Spare Strings into Separate Dictionaries
 
 * during loading of database, index unique instances of strings
 
 * create nice accessors to hide implementation detail
 
-```
+```swift
 func getGlId() -> String? {
     return gl_id != -1 ? DB.glIds[Int(gl_id)] : nil
 }
+```
+
+
+---
+
+![](starsBack.png)
+
+## Spare Strings into Separate Dictionaries
+
+```swift, [.highlight:  12-15, 18]
+struct StarData {
+    let right_ascension: Float
+    let declination: Float
+    let hip_id: Int32
+    let hd_id: Int32
+    let hr_id: Int32
+    let colorIndex: Float
+    let distance: Double
+    let rv: Double
+    let mag: Double
+    let absmag: Double
+    let gl_id: Int16
+    let bayer_flamstedt: Int16
+    let properName: Int16
+    let spectralType: Int16
+}
+
+MemoryLayout<StarData>.stride   // 64
 ```
 
 * are we done?
@@ -425,7 +650,27 @@ func getGlId() -> String? {
 
 ## Alignment One More Time
 
-![inline](finalStruct.png)
+```swift
+struct StarData {
+    let right_ascension: Float
+    let declination: Float
+    let spectralType: Int16
+    let gl_id: Int16
+    let bayer_flamstedt: Int16
+    let properName: Int16
+    let db_id: Int32
+    let hip_id: Int32
+    let hd_id: Int32
+    let hr_id: Int32
+    let rv: Float
+    let mag: Float
+    let absmag: Float
+    let colorIndex: Float
+    let distance: Double
+}
+
+MemoryLayout<StarData>.stride   // 56
+```
 
 ---
 
