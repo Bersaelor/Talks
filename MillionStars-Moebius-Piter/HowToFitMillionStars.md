@@ -111,6 +111,8 @@ measure {
 ## Explanation L1/L2-Caches
 
 
+![inline](/Users/konrad/Desktop/l2cache.png)
+
 
 ---
 
@@ -134,12 +136,24 @@ var lazilyCalculated: Object {
 
 ---
 
-## Optimization Steps
+## Optimization Loop
 
 ![inline](optimizationLoop.png)
 
-* unit tests features so we don't break them during the loop
 
+---
+
+## Unit Tests!
+
+```swift
+func heavyCalculation(input: Input) -> Output {
+  // lot's of code
+  // ⟲
+}
+```
+
+* unit test `Input -> Output` for correctness
+* optimize internal algorithm iteratively for performance 
 
 ---
 
@@ -163,32 +177,13 @@ We want to write:
 * -> pick your battles
 
 
-
 ---
 
-## Intermission: Swift Compiler
+![](starsBack.png)
 
-* we can also apply the same steps to swift project compilation time
+# ✨✨ Main Example: ✨✨
 
-```
-xcodebuild -project App.xcproj -scheme App clean build
- OTHER_SWIFT_FLAGS="-Xfrontend -debug-time-function-bodies" | 
- grep "[0-9][0-9]\.[0-9]*ms" | sort -nr > culprits.txt
-```
-
----
-
-![left](large dataset.png)
-
-## Main Example
-
-
-* large database of stars
-* many columns
-* ` =<Star3D>.size`
-* `// 217`
-* `MemoryLayout<Star3D>.stride`
-* `// 224`
+* large database of stars with many columns
 * 8000 x ⭐️  ~ 1.8 MB 🙂
 
 * 120000 x ⭐️  ~ 27 MB 😐
@@ -198,34 +193,25 @@ xcodebuild -project App.xcproj -scheme App clean build
 • Hipparcos catalogue 
 • Tycho2 - db of 2.5 million brightest (1993)
 
----
-
-## Seperate Spatial Data from Rest
-
-```
-struct Star3D {
-    let dbID: Int32
-    let x: Float
-    let y: Float
-    let z: Float
-    let starData: Box<StarData>?
-}
-```
-
-* only x/y/z needed for spatial tree structure
-* significantly reduces size of tree and increases tree lookup performance
-* `Box` is `Unmanaged` / `Unretained` to speed up tree structure 🚨
-
-![right 130%](kdtree.png)
 
 ---
+
+# Size vs Stride
+
+* `MemoryLayout<Star3D>.size // 217`
+* `MemoryLayout<Star3D>.stride // 224`
+
+
+---
+
+![](starsBack.png)
 
 ![left 110%](basicStruct.png)
 ## Basic (Unoptimized?) Struct
 
 * Overall stride of 208 Byte
   
-* actually, this was _sort of_ optimized, as
+* some thoughts on optimization went in there
 
 * `print(Int8.max) // 127`
 * `print(Int16.max) // 32767`
@@ -237,6 +223,8 @@ looks optimal, used the right integer sizes
 with these sizes, let's look at more detail
 
 ---
+
+![](starsBack.png)
 
 ![left 140%](tally.png)
 
@@ -258,6 +246,8 @@ with these sizes, let's look at more detail
 
 --- 
 
+![](starsBack.png)
+
 ## Our Favorite Swift Type 
 
 ```
@@ -271,6 +261,8 @@ enum Optional<Wrapped> {
 ![inline 100%](memorysize of optional.png)
 
 ---
+
+![](starsBack.png)
 
 ## No Optionals
 
@@ -290,6 +282,8 @@ in my case I actually store it as a static variable and compare the variable
 
 ---
 
+![](starsBack.png)
+
 ![left 90%](withoutOptionals.png)
 
 ## Struct without Optionals
@@ -304,6 +298,8 @@ in my case I actually store it as a static variable and compare the variable
 
 --- 
 
+![](starsBack.png)
+
 # Alignment (C Knowledge to the Rescue!)
 
 * modern CPUs lay out data types so memory access is fast
@@ -317,11 +313,15 @@ in my case I actually store it as a static variable and compare the variable
 
 --- 
 
+![](starsBack.png)
+
 # Alignment (Swift)
 
 ![inline](alignementSwift.png)
 
 --- 
+
+![](starsBack.png)
 
 # Padding
 
@@ -330,6 +330,8 @@ in my case I actually store it as a static variable and compare the variable
 ![inline 120%](paddingGraphic.png)
 
 --- 
+
+![](starsBack.png)
 
 # Bad Alignment Example
 
@@ -345,6 +347,8 @@ print(MemoryLayout<BadAligned>.stride) // 32Byte
 ![left inline 100%](badPadding.png)
 
 --- 
+
+![](starsBack.png)
 
 # Better Alternative
 ```
@@ -364,6 +368,8 @@ Like playing tetris ;)
 
 --- 
 
+![](starsBack.png)
+
 ![left 82%](alignedStarData.png)
 
 # Aligned StarData
@@ -374,6 +380,8 @@ Like playing tetris ;)
 
 
 ---
+
+![](starsBack.png)
 
 ![left 82%](alignedStarDataAnnotated.png)
 
@@ -393,6 +401,8 @@ Like playing tetris ;)
 
 ---
 
+![](starsBack.png)
+
 ![left 82%](starDataIndexed.png)
 
 ## Spare Strings into Separate Dictionaries
@@ -411,11 +421,15 @@ func getGlId() -> String? {
 
 ---
 
+![](starsBack.png)
+
 ## Alignment One More Time
 
 ![inline](finalStruct.png)
 
 ---
+
+![](starsBack.png)
 
 ## Final Result
 
@@ -435,6 +449,27 @@ Examples (when not to use what we just learned):
 * Server-Side Swift with > 10^6 entries ✅
 * procedurally generated content in a game ✅
 * points of interest in MapKit ✅
+
+---
+
+## Extra: Swift Compiler
+
+* we can also apply the same steps to swift project compilation time
+* measure compilation of each function and sort result
+
+```bash
+xcodebuild -project App.xcproj -scheme App clean build
+ OTHER_SWIFT_FLAGS="-Xfrontend -debug-time-function-bodies" | 
+ grep "[0-9][0-9]\.[0-9]*ms" | sort -nr > culprits.txt
+```
+
+```
+430.23ms	../Pods/SwiftyBeaver/Sources/AES256CBC.swift:356:18	instance method decrypt(block:)
+267.29ms	../LooC/ContrastTestViewModel.swift:99:22	instance method adjustBrightnessGradually()
+262.38ms	../LooC/HistoryViewModel.swift:215:18	instance method graphForNearVision(tests:firstT:lastT:)
+250.10ms	../LooC/HistoryViewModel.swift:276:10	instance method generateFakeTests()
+224.70ms	../LooC/HistoryViewModel.swift:221:41	(closure)
+```
 
 ---
 ## Server-Side Swift Example
