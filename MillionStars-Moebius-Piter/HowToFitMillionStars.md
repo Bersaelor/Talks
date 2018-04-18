@@ -101,14 +101,35 @@ We want to write:
 
 ---
 
-## What to Optimize for?
+[.build-lists: false]
+## small memory size -> fast execution?
 
-* memory and cpu optimization can sometimes benefit from each other, example:
+* Test example:
 
 ```swift
-struct Element {
+struct Element8 {
   let n: Int
-  // more variables to fill to certain size
+}
+
+struct Element16 {
+  let n: Int
+  let m: Int
+}
+
+struct Element32 { let k, l, m, n: Int }
+struct Element48 { let k, l, m, n, o, p: Int }
+// ...
+struct Element512 { ... }
+```
+
+---
+
+[.build-lists: false]
+## small memory size -> fast execution?
+
+```swift
+struct Element8 {
+  let n: Int
 }
 
 let array: [Element] = // ...
@@ -120,21 +141,31 @@ measure {
 
 ---
 
-## What to Optimize for?
+## small memory size -> fast execution?
 
-* memory and cpu optimization can sometimes benefit from each other 
+* ![inline 90%](memoryPerformance.png)
 
-![inline 100%](memoryPerformance.png)
+* every test has the same number of `+`-operations!
 
 ^^Remember: all test-cases have the same number of operations!
 
 ---
 
+[.build-lists: false]
 ## Explanation L1/L2-Caches
 
+* small array has to be fetched from main memory in one piece
 
-![inline](/Users/konrad/Desktop/l2cache.png)
+![inline 100%](l2-fast.png)
 
+---
+
+[.build-lists: false]
+## Explanation L1/L2-Caches
+
+* large arrays have to be fetched in multiple steps
+
+![inline 100%](l2-slow.png)
 
 ---
 
@@ -158,8 +189,7 @@ var lazilyCalculated: Object {
 
 ## Optimization Loop
 
-![inline](optimizationLoop.png)
-
+![inline 100%](optimizationLoop.png)
 
 ---
 
@@ -598,6 +628,7 @@ struct StarData {
 
 * 4307 different spectral types (could be cleaned up)
 
+
 ---
 
 ![](starsBack.png)
@@ -691,6 +722,18 @@ again, this is not about the numbers
 but about getting more out of our app -> more stars
 
 ---
+
+![](starsBack.png)
+
+## Reminder - Unit Test!
+
+* while doing all the above optimizations:
+
+* run unit tests after each change of code
+
+* we can be sure we didn't break anything ⛑
+
+---
 ## Premature optimization is the root of all evil…
 
 Examples (when not to use what we just learned):
@@ -731,6 +774,7 @@ xcodebuild -project App.xcproj -scheme App clean build
 
 
 ---
+![](starsBack.png)
 ## What did we learn today?
 
 * pick your battles wisely!
@@ -744,6 +788,7 @@ xcodebuild -project App.xcproj -scheme App clean build
 * profile first!
 
 ---
+![](starsBack.png)
 ## Links
 
 * Premature Optimization http://wiki.c2.com/?PrematureOptimization
@@ -752,9 +797,17 @@ xcodebuild -project App.xcproj -scheme App clean build
 * Swift Array Design https://github.com/apple/swift/blob/master/docs/Arrays.rst
 * KDTree / Stars at Functional Swift https://www.youtube.com/watch?v=CwcEjxRtn18
 
+---
+![](starsBack.png)
+## Repos
+
+* This talk & playgrounds: https://github.com/Bersaelor/Talks/tree/master/MillionStars-Moebius-Piter
+* The 🌠-db: https://github.com/Bersaelor/SwiftyHYGDB
+* KD-Tree structure: https://github.com/Bersaelor/KDTree
+
 
 --- 
-
+![](starsBack.png)
 ## Thank you
 
 * github.com/Bersaelor

@@ -37,10 +37,7 @@ struct Block16 {
 }
 
 struct Block32 {
-    let k: Int
-    let l: Int
-    let m: Int
-    let n: Int
+    let k, l, m, n: Int
 }
 
 struct Block48 {
