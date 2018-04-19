@@ -29,7 +29,7 @@ build-lists: true
 
 ![inline fill](/Users/konrad/Downloads/maxresdefault.jpg)
 
-* improve quality
+* same features but better quality
   * graphics
 	* sound
 	* AI ...  
@@ -38,13 +38,16 @@ build-lists: true
 
 ---
 
-## Why Optimize Code?
+![](arm_vs_vulcan.png)
 
-![inline autoplay loop](low battery.gif)
+  <BR>
+  <BR>
+  <BR>
 
-* battery power
 * every CPU cycle on mobile costs power (and $$$ when on server)
-* sometimes 0fps -> good thing
+* sometimes 0fps -> good thing 
+
+[.footer: Image Copyright © 1995-2018 Arm Limited]
 
 ---
 
