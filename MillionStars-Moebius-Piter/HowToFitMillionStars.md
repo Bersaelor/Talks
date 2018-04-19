@@ -2,6 +2,7 @@ build-lists: true
 
 # How to fit a million ✨ into a 📱
 
+[.footer: konrad@looc.io]
 ![](IMG_1044.jpg)
 
 ---
@@ -25,25 +26,26 @@ build-lists: true
 
 ---
 
-## Why Optimize Code?
-
-![inline fill](/Users/konrad/Downloads/maxresdefault.jpg)
+![inline 40%](maxresdefault.jpg)
 
 * same features but better quality
   * graphics
 	* sound
 	* AI ...  
 
+[.footer: Image: Vanishing of Ethan Carter © The Astronauts / Epic Games]
+
 ^• same but better -> happier users
 
 ---
+
+## Why Optimize Code?
 
 ![](arm_vs_vulcan.png)
 
   <BR>
   <BR>
-  <BR>
-
+* 🔋
 * every CPU cycle on mobile costs power (and $$$ when on server)
 * sometimes 0fps -> good thing 
 
@@ -54,12 +56,9 @@ build-lists: true
 ## Why Optimize Code?
 
 * enable advanced features
+* that weren't possible without optimization ☝️
 
 ^• impossible without optimization
-• maybe show Pyramid of user happiness
-• maybe talk about 0fps board game example
-
-![right 33%](advancesfeatures.jpg)
 
 ---
 
@@ -97,7 +96,7 @@ We want to write:
 ## What to Optimize for?
 
 * memory
-* how long our stays in background mode before being killed by iOS
+* how long our app stays in background mode before being killed by iOS
 * fitting your project on small mobile devices (Watch!)
 
 ![inline](allocations.png)
@@ -151,11 +150,12 @@ measure {
 * every test has the same number of `+`-operations!
 
 ^^Remember: all test-cases have the same number of operations!
+^^pause for `why is this happening?`
 
 ---
 
 [.build-lists: false]
-## Explanation L1/L2-Caches
+## Explanation L1/L2 Caches
 
 * small array has to be fetched from main memory in one piece
 
@@ -164,7 +164,7 @@ measure {
 ---
 
 [.build-lists: false]
-## Explanation L1/L2-Caches
+## Explanation L1/L2 Caches
 
 * large arrays have to be fetched in multiple steps
 
@@ -172,7 +172,7 @@ measure {
 
 ---
 
-# sometimes cpu ⚡️ memory 
+# Sometimes CPU ⚡️ Memory 
 
 * e.g. all kinds of caches, simplest example:
 
@@ -213,6 +213,12 @@ func heavyCalculation(input: Input) -> Output {
 
 ![](starsBack.png)
 
+# ✨ Main Example: ✨
+
+---
+
+![](starsBack.png)
+
 # ✨✨ Main Example: ✨✨
 
 * large database of stars with many columns
@@ -224,7 +230,7 @@ func heavyCalculation(input: Input) -> Output {
 ^•visible with naked eye
 • Hipparcos catalogue 
 • Tycho2 - db of 2.5 million brightest (1993)
-
+• show demo using Quicktime
 
 ---
 
@@ -268,14 +274,14 @@ MemoryLayout<StarData>.stride // 208
 
 ![](starsBack.png)
 
-## How big are Ints?
+## How Big are Ints?
 
 * `print(Int8.max) // 127`
 * `print(Int16.max) // 32767`
 * `print(Int32.max) // 2147483647`
 * `print(Int.max) // 9223372036854775807`
 
-* when designing the struct we already noticed we never need more then `Int32` to fit all stars
+* when designing the struct we already noticed we never need more than `Int32` to fit all stars
 
 ^as we all remember Int sizes use different amount of bytes
 
@@ -386,7 +392,7 @@ struct StarData {
 
 ![](starsBack.png)
 
-## Quick Summing up
+## Quick Summing up of the Sizes
   
 * Float, Int32 : 4 Byte
 
@@ -394,7 +400,7 @@ struct StarData {
 
 * String: 24 Byte
 
-* `24*4 + 8*4 + 4*6 = 152`
+* `4*24 + 4*8 + 6*4 = 152`
 
 * 152 != 208 
 
@@ -446,7 +452,7 @@ in my case I actually store it as a static variable and compare the variable
 
 ![](starsBack.png)
 
-## Struct without Optionals
+## Struct Without Optionals
 
 ```swift
 struct StarData {
@@ -474,7 +480,7 @@ MemoryLayout<StarData>.stride // 160
 
 ![](starsBack.png)
 
-## Struct without Optionals
+## Struct Without Optionals
 
 * wait, what?
 
