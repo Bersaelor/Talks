@@ -6,6 +6,19 @@ build-lists: true
 ![](IMG_1044.jpg)
 
 ---
+
+## About me
+
+* Konrad Feiler ![inline 150%](berlin_icon.png)
+* 8 years of iOS / ObjC / Swift 📱👨‍💻⌚️
+* a lot of projects for VoD / Media 📺
+* special interests: 
+`OpenGL`, functional Swift, `SceneKit`, AR, VR, `OpenCV`
+* looc.io 👨‍⚕️👁👓
+* mathheartcode.com ✨ 👾
+
+---
+
 ## Content
 
 * general points on optimization
