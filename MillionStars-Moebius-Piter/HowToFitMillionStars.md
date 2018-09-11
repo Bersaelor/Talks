@@ -1,6 +1,6 @@
 build-lists: true
 
-# How to fit a million ✨ into a 📱
+# How to fit a million ✨ into an 📱
 
 [.footer: konrad@looc.io]
 ![](IMG_1044.jpg)
@@ -48,7 +48,7 @@ build-lists: true
 
 [.footer: Image: Vanishing of Ethan Carter © The Astronauts / Epic Games]
 
-^• same but better -> happier users
+^^ same but better -> happier users
 
 ---
 
@@ -71,7 +71,7 @@ build-lists: true
 * enable advanced features
 * that weren't possible without optimization ☝️
 
-^• impossible without optimization
+^^ impossible without optimization
 
 ---
 
