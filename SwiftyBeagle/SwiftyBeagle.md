@@ -153,18 +153,20 @@ Adoption of alternatives like GraphQL is slow
 
 ---
 
+[.header: alignment(center)]
+
 # 🐶 SwiftyBeagle 
 
--> DEMO
+-- insert demo picture
 
 ---
 
 # 🐶 SwiftyBeagle 
-* create folder in iOS project
-* run `swift package init`
-* tell SPM which iOS app files to import and their folders
-* import `SwiftyBeagle` as a dependency
-* write validation-functions
+1. create folder in iOS project
+1. run `swift package init`
+1. tell SPM which iOS app files to import and their folders
+1. import `SwiftyBeagle` as a dependency
+1. write validation-functions
 
 let 🐶 take care of the web-part for you
 
