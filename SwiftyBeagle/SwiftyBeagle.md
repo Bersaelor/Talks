@@ -9,7 +9,7 @@ build-lists: true
 ## Who am I?
 
 
-- one man agency @ mathheartcode.com 
+- one-man agency @ mathheartcode.com 
 - co-founder @ looc.io 
 - iOS apps for 9 years (![inline](tactica.png),![inline](looc.png), ![inline](nickplay.png),![inline](mtvplay.png),![inline](ccplay.png))
 - some minor server work in RoR & Python 
@@ -21,7 +21,7 @@ build-lists: true
 
 ---
 
-## Client - Backend
+## Client <-> Backend
 ![](Illustrations.002.jpeg)
 
 - Facebook, Twitter, AirBnb, Kickstarter, Amazon, Netflix, Twitch, Spotify, WhatsApp ...
@@ -33,7 +33,7 @@ How many of those were client apps?
 
 ---
 
-## Client - Backend
+## Client <-> Backend
 
 - RESTful API
 - JSON responses
@@ -82,10 +82,10 @@ Adoption of alternatives like GraphQL is slow
 ## Bug fix process
 
 - users/qa reports -> ticket for mobile dev
-- mobile dev replicates (same test device, test correct language-setting, vpn to region ...)
+- mobile dev replicates (same test device, test correct language settings, vpn to region ...)
 - mobile dev finds problematic URL/endpoint
 - mobile client dev -> ticket for Backend-Team
-- Backend-Team fixes issue
+- backend team fixes issue
 
 ^^maybe good QA can start app in Xcode or uses charles
 ^^this is the ideal scenario, often problems are transient and go back and forth multiple times
@@ -138,7 +138,7 @@ Adoption of alternatives like GraphQL is slow
 + monitoring tool always up to date
 + fetch and parse exactly as the app is
 + allow non-devs to find all urls the app is calling via web frontend
-+ send alerts to key-people when validations fail
++ send alerts to key people when validations fail
 
 ---
 
@@ -154,7 +154,7 @@ Adoption of alternatives like GraphQL is slow
 #endif
 ``` 
 
-- Dockerfile, docker-compose, database-miniservices, deploying on virtual private servers are "Neuland" for many mobile devs
+- Dockerfile, `docker-compose`, database - microservices, deploying on virtual private servers are "Neuland" for many mobile devs
 
 ---
 
@@ -162,9 +162,9 @@ Adoption of alternatives like GraphQL is slow
 
 # 🐶 SwiftyBeagle 
 
-- takes care of web-parts for you
+- takes care of webparts for you
 - developers define detailed validation functions
-- 🐶 "balks" when problems occur
+- 🐶 "barks" when problems occur
 
 ---
 
@@ -180,7 +180,7 @@ Adoption of alternatives like GraphQL is slow
 1. dependencies: `[ .package(url: "SwiftyBeagle", .upToNextMinor(from: "0.1.0"))]`
 1. tell SPM which iOS app files to import and their folders
 1. import `SwiftyBeagle` as a dependency
-1. write validation-functions
+1. write validation functions
 
 
 
