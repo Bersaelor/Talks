@@ -192,6 +192,7 @@ Adoption of alternatives like GraphQL is slow
 * talk: https://github.com/Bersaelor/Talks/tree/master/SwiftyBeagle
 * repo with example https://github.com/Bersaelor/SwiftyBeagle
 
+Pull requests welcome 🤓
 
 --- 
 ![](Illustrations.006.jpeg)
