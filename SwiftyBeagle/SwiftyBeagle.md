@@ -57,10 +57,13 @@ Adoption of alternatives like GraphQL is slow
 - images are wrong/missing
 
 ^^how many of you have encountered these problems
+^^what happens when any of those issues occur to a live app?
 
 ---
 
 ![original, fit](angry.jpg)
+
+[.footer: imgflip.com]
 
 ---
 
@@ -69,8 +72,10 @@ Adoption of alternatives like GraphQL is slow
 - "Hey app devs, the project page is slow! 😡"
 - "Hey app devs, this show has no episodes! 😡"
 - "Hey app devs, the XYZ has no title/subtitle/image! 😡"
-- we use `?` when unwrapping jsons to prevent even worse
-- 70% of the bug tickets for mature apps!
+-> 70% of the bug tickets for mature apps!
+
+^^we use `?` when unwrapping jsons to prevent even worse !
+
 
 ---
 
@@ -111,6 +116,8 @@ Adoption of alternatives like GraphQL is slow
 
 ![original](Illustrations.004.jpeg)
 
+
+
 ---
 
 ### framework importing on iOS
@@ -147,7 +154,7 @@ Adoption of alternatives like GraphQL is slow
 #endif
 ``` 
 
-- Dockerfile, docker-compose, database-miniservices, deploying on virtual private servers are foreign countries for mobile devs
+- Dockerfile, docker-compose, database-miniservices, deploying on virtual private servers are "Neuland" for many mobile devs
 
 ---
 
@@ -157,11 +164,13 @@ Adoption of alternatives like GraphQL is slow
 
 - takes care of web-parts for you
 - developers define detailed validation functions
-- "balks" when problems occur
+- 🐶 "balks" when problems occur
 
 ---
 
 ![original, fit](livedemo.jpg)
+
+[.footer: imgflip.com]
 
 ---
 
