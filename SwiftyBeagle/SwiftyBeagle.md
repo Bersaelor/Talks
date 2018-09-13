@@ -60,9 +60,7 @@ Adoption of alternatives like GraphQL is slow
 
 ---
 
-## Who is blamed (by users & managment)?
-
-- insert meme
+![original, fit](angry.jpg)
 
 ---
 
@@ -157,18 +155,26 @@ Adoption of alternatives like GraphQL is slow
 
 # 🐶 SwiftyBeagle 
 
--- insert demo picture
+- takes care of web-parts for you
+- developers define detailed validation functions
+- "balks" when problems occur
+
+---
+
+![original, fit](livedemo.jpg)
 
 ---
 
 # 🐶 SwiftyBeagle 
 1. create folder in iOS project
-1. run `swift package init`
+1. run `swift package init --type executable`
+1. dependencies: `[ .package(url: "SwiftyBeagle", .upToNextMinor(from: "0.1.0"))]`
 1. tell SPM which iOS app files to import and their folders
 1. import `SwiftyBeagle` as a dependency
 1. write validation-functions
 
-let 🐶 take care of the web-part for you
+
+
 
 ---
 ![](Illustrations.006.jpeg)
